@@ -1,14 +1,16 @@
 DROP DATABASE IF EXISTS imobiliaria_bd;
 CREATE DATABASE IF NOT EXISTS imobiliaria_bd;
 
+ALTER SCHEMA `imobiliaria_bd`  DEFAULT CHARACTER SET utf8  DEFAULT COLLATE utf8_general_ci ;
+
 USE imobiliaria_bd;
 
 CREATE TABLE IF NOT EXISTS clientes(
 	id INT NOT NULL AUTO_INCREMENT,
-	name VARCHAR(80) NOT NULL,
+	nome VARCHAR(80) NOT NULL,
 	cpf VARCHAR(11) NOT NULL UNIQUE,
 	email VARCHAR(100) NOT NULL,
-	telefone VARCHAR(9) NOT NULL,
+	telefone varchar(15) NOT NULL,
 	data_nascimento DATE NOT NULL,
 	sexo ENUM('Masculino', 'Feminino', 'Outro', 'N/I') NOT NULL,
 	relacao_imobiliaria ENUM('Inquilino(a)', 'Locatário(a)', 'Comprador(a)', 'Vendedor(a)') NOT NULL,
@@ -42,8 +44,8 @@ CREATE TABLE IF NOT EXISTS imoveis(
 	tipo_imovel ENUM('Casa', 'Apartamento', 'Terreno', 'Sala comercial') NOT NULL,
 	tipo_negocio ENUM('Venda', 'Locação') NOT NULL,
 	motivo_indisponivel ENUM('Vendido', 'Alocado'),
-	cpf_proprietario VARCHAR(11) NOT NULL UNIQUE,
-	cpf_morador VARCHAR(11) NOT NULL UNIQUE,
+	cpf_proprietario VARCHAR(11) NOT NULL,
+	cpf_morador VARCHAR(11) NOT NULL,
 	quantidade_quartos INT,
 	quantidade_suites INT,
 	quantidade_salas_estar INT,
@@ -82,13 +84,13 @@ DELIMITER ;
 
 CREATE TABLE IF NOT EXISTS transacao_imovel (
 	id INT NOT NULL AUTO_INCREMENT,
-    id_imovel VARCHAR(25) UNIQUE,
+    id_imovel VARCHAR(25),
     tipo_transacao ENUM('Alocado', 'Venda', 'Proposta') NOT NULL,
     valor_sugerido_proprietario DOUBLE NOT NULL,
     valor_transacao DOUBLE NOT NULL,
     feita_transicao BOOLEAN,
-   	cpf_cliente_interessado VARCHAR(11) UNIQUE,
-    cpf_proprietario VARCHAR(11) NOT NULL UNIQUE,
+   	cpf_cliente_interessado VARCHAR(11),
+    cpf_proprietario VARCHAR(11) NOT NULL,
     cpf_locatario VARCHAR(11) UNIQUE,
     PRIMARY KEY(id),
     FOREIGN KEY (id_imovel) REFERENCES imoveis(id_imovel),
@@ -104,3 +106,5 @@ CREATE TABLE IF NOT EXISTS documentos(
     id_imovel VARCHAR(25) NOT NULL,
     PRIMARY KEY(id)
 );
+
+SELECT * FROM clientes
